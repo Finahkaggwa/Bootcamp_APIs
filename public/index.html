@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bootcamp APIs</title>
     <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
+
 <body>
     <h1>My API Widgets</h1>
 
@@ -27,13 +31,13 @@
             });
         }
 
-    }">
+       }">
 
         <div>
             <textarea x-model="sentence" name="" id="" cols="30" rows="5"></textarea>
         </div>
         <div>
-            <button x-on:click="checkSentence" >Check sentence</button>
+            <button x-on:click="checkSentence">Check sentence</button>
         </div>
         <div>
             <div>
@@ -48,6 +52,87 @@
         </div>
 
     </div>
+
+    <div x-data="{
+        projectedUsage: '',
+        airtimeAvailable: '0.00',
+      airtimeMessage: 'Amount of airtime left...',
+          
+      calculate(){
+        axios.get(`/api/enough?projectedUsage=${this.projectedUsage}&airtimeAvailable=${this.airtimeAvailable}`)
+        .then((result) => {
+            console.log(result.data);
+            this.airtimeMessage = result.data.results;
+            
+        });
+
+        setTimeout(() => {
+          this.projectedUsage = '';
+          this.airtimeAvailable = '';
+          this.airtimeMessage = '';
+        }, 5000)
+      },
+
+     }">
+
+        <div class="widget-Disp">
+            <h2>Enough Airtime</h2>
+
+            <div class="airtime">
+                <label for="usage">Please enter your airtime usage:</label>
+                <input type="text" x-model="projectedUsage" id="usage" placeholder="call,sms,data">
+            </div>
+
+            <div class="airtime">
+                <label for="amount">Amount available:</label>
+                <input type="text" x-model="airtimeAvailable" id="amount">
+            </div>
+
+            <div class="message" x-text="airtimeMessage"></div>
+
+            <div>
+                <button class="click" x-on:click="calculate">Calculate airtime usage</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div x-data="{
+        bill: '',
+        usage: '0.00',
+      airtimeMessage: 'Amount of airtime left...',
+          
+      totalUsage(){
+        axios
+        .get(`/api/totalPhoneBill?bill=${this.bill}`)
+        .then((result) => {
+            console.log(result.data);
+            this.usage = result.data.Total;
+            
+        });
+      },
+
+     }">
+
+        <div class="widget-Disp">
+            <h2>Total Phone bill</h2>
+
+            <div class="airtime">
+                <textarea x-model="bill" name="" id="" cols="30" rows="3"></textarea>
+            </div>
+
+            <div class="message" x-text="usage"></div>
+
+            <div>
+                <button class="click" x-on:click="totalUsage">Calculate total bill</button>
+            </div>
+        </div>
+
+    </div>
     
+
 </body>
+
 </html>
