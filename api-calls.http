@@ -1,0 +1,16 @@
+POST http://localhost:6007/api/enough HTTP/1.1
+content-type: application/json
+
+{
+    "projectedUsage": "call,sms,call,data,data",
+    "airtimeAvailable": 50
+}
+
+###
+GET http://localhost:6007/api/totalPhoneBill 
+content-type: application/json
+
+{
+    "bill": "call,sms,call",
+    
+}
